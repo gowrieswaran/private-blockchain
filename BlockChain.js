@@ -52,7 +52,8 @@ class Blockchain {
       self.bd
         .getLevelDBData(height)
         .then(value => {
-          console.log;
+          console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+          //console.log(JSON.parse(value));
           resolve(JSON.parse(value));
         })
         .catch(err => {
@@ -71,17 +72,28 @@ class Blockchain {
         .getBlockHeight()
         .then(height => {
           block.height = height;
-          block.hash = SHA256(JSON.stringify(block)).toString();
           block.time = new Date()
             .getTime()
             .toString()
             .slice(0, -3);
-          block.previousBlockHash = self.getBlock(height - 1).hash;
-          self.bd.addLevelDBData(
-            block.height,
-            JSON.stringify(block).toString()
-          );
-          resolve(block.height);
+          if (block.height > 0) {
+            self
+              .getBlock(block.height - 1)
+              .then(value => {
+                //let valueParse = JSON.parse(value);
+                block.previousBlockHash = value.hash;
+                block.hash = SHA256(JSON.stringify(block)).toString();
+                self.bd.addLevelDBData(
+                  block.height,
+                  JSON.stringify(block).toString()
+                );
+                resolve(block);
+              })
+              .catch(err => {
+                console.log(err);
+                reject(err);
+              });
+          }
         })
         .catch(err => {
           console.log(err);
@@ -94,10 +106,11 @@ class Blockchain {
   validateBlock(height) {
     let self = this;
     return new Promise((resolve, reject) => {
-      this.getBlock(height)
+      self
+        .getBlock(height)
         .then(blockData => {
-          //get and parse block object
-          let block = JSON.parse(blockData);
+          //get block object
+          let block = blockData;
           //get block hash
           let blockHash = block.hash;
           // remove block hash to test block integrity
@@ -110,11 +123,16 @@ class Blockchain {
             resolve(true);
           } else {
             console.log(
+              "```````````````````````````````````````````````````````````````````"
+            );
+            console.log(
               "Block #" +
-                blockHeight +
+                blockData.height +
                 " invalid hash: \n" +
                 blockHash +
+                "\n" +
                 " <>" +
+                "\n" +
                 validBlockHash
             );
           }
@@ -148,6 +166,31 @@ class Blockchain {
         });
     });
   }
-}
 
+  /************************************************** */
+  /*clearDBData() {
+    let self = this;
+    self
+      .getBlockHeight()
+      .then(height => {
+        for (let i = 0; i <= height; i++) {
+          self.bd
+            .delLevelDBData(i)
+            .then(key => {
+              console.log("Deleted Block #" + key);
+              //resolve(key);
+            })
+            .catch(err => {
+              console.log("Error deleting Block", err);
+              reject(err);
+            });
+        }
+        //resolve(i);
+      })
+      .catch(err => {
+        console.log(err);
+        reject(err);
+      });
+  } */
+}
 module.exports.Blockchain = Blockchain;
