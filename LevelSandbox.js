@@ -4,6 +4,7 @@
 
 const level = require("level");
 const chainDB = "./chaindata";
+//const chainDB = "./blockdata";
 
 class LevelSandbox {
   constructor() {
@@ -44,7 +45,22 @@ class LevelSandbox {
       });
     });
   }
-
+  /*
+  //delete blocks
+  delLevelDBData(key) {
+    let self = this;
+    return new Promise(function(resolve, reject) {
+      // Add your code here, remember un Promises you need to resolve() or reject()
+      self.db.del(key, function(err) {
+        if (err) {
+          console.log("Block " + key + " deletion failed", err);
+          reject(err);
+        }
+        resolve(key);
+      });
+    });
+  }
+*/
   // Method that return the height
   getBlocksCount() {
     let self = this;
@@ -61,6 +77,7 @@ class LevelSandbox {
           reject(err);
         })
         .on("close", function() {
+          //console.log("Height of the block is" + count);
           resolve(count);
         });
     });
