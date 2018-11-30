@@ -1,7 +1,7 @@
-/* ===== Block Class ==============================
-|  Class with a constructor for block 			   |
-|  ===============================================*/
 
+/**********************************************************************
+ ** @constructor - Block Class for creating a Block                ****
+ **********************************************************************/
 class Block {
   constructor(data) {
     // Add your Block properties
