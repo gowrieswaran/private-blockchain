@@ -24,7 +24,7 @@ Building your Private Blockchain utilizing Node.js with LevelDB.
    `validateBlock`        - Method that validates the blocks <br>
    `validateBlockLink`    - Method that validates the link(hash) between the blocks <br>
    `validateBlockChain`   - Method that validates the blockchain <br>
-   '_modifyBlock'         - Utility method to modify block(for testing) <br>
+   `_modifyBlock`         - Utility method to modify block(for testing) <br>
    `clearDBData`          - Utility method to clear test data <br>
 
 3. LevelSandbox.js        - Implements the data interaction for your Private Blockchain. It is the Data Access Layer for the application
@@ -32,8 +32,8 @@ Building your Private Blockchain utilizing Node.js with LevelDB.
     `addLevelDBData`      - Method that adds data to LevelDB. <br>
     `getLevelDBData`      - Method to fetch data from LevelDB. <br>
     `getBlocksCount`      - Method to get the count(key) from Level DB. <br>
-    'delLevelDBData'      - Utility method to delete the test data. <br>
-    'getAllBlocks'        - Utility method to fetch entire data.<br>
+    `delLevelDBData`      - Utility method to delete the test data. <br>
+    `getAllBlocks`        - Utility method to fetch entire data.<br>
 
 4. simpleChain.js         - File which has all the methods to test the various functionalities to validate the BlockChain.
 
